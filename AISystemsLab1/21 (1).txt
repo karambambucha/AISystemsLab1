@@ -1,0 +1,130 @@
+using System.Security.Cryptography;
+
+namespace MG
+{
+    public class Program
+    {
+        public static void GetCompare(double[,] a, double[,] b)
+        {
+            if (Sravn(a, b) == 1) { Console.WriteLine(" < != <= "); }
+            else if (Sravn(a, b) == 2) { Console.WriteLine(" > != >= "); }
+            else if (Sravn(a, b) == 3) { Console.WriteLine(" = "); }
+
+        }
+
+        public static double[,] GetMultiply(double[,] a, double[,] b)
+        {
+            double[,] ans = a;
+
+            
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                ans[i,1] = a[i, 1] * b[i, 1];
+                ans[i,2] =  a[i, 2] * b[i, 2];
+            }
+            return ans;
+        }
+
+        public static bool TryDivide(double[,] b)
+        {
+
+            bool ans = true;
+            for (int i = 1; i < b.GetLength(0); i++)
+            {
+                for (int j = 0; j < b.GetLength(1); j++)
+                {
+                    if (b[i, j] == 0) ans = false;
+                }
+                Console.WriteLine();
+            }
+            return ans;
+        }
+        public static double[,] GetDivide(double[,] a, double[,] b)
+        {
+            double[,] ans = a;
+
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                ans[i, 1] = a[i, 1] / b[i, 2];
+                ans[i, 2] = a[i, 2] / b[i, 1];
+            }
+            return ans;
+        }
+
+
+        public static int Sravn(double[,] a, double[,] b)
+        {
+            int sravnans;
+            double asum = (a[0, 1] + a[0, 2] + a[1, 1] + a[1, 2] + a[2, 1] + a[2, 2]);
+            double bsum = (b[0, 1] + b[0, 2] + b[1, 1] + b[1, 2] + b[2, 1] + b[2, 2] + b[3, 1] + b[3, 2]);
+            bool sravup = (((1f / (a.GetLength(0))) * asum) > ((1f / (b.GetLength(0))) * bsum));
+            bool sraveq = (((1f / (a.GetLength(0))) * asum) == ((1f / (b.GetLength(0))) * bsum));
+
+            if ((sravup == false) && (sraveq == false)) { sravnans = 1; }// a < b  a!=b
+            else if ((sravup == true) && (sraveq == false)) { sravnans = 2; }// a > b  a!=b
+            else { sravnans = 3; }// a = b
+
+            return sravnans;
+        }
+
+        static void Main(string[] args)
+        {
+
+
+            double[,] a = {
+                { 0, 1, 10 },
+                { 0.5, 2, 9},
+                { 1, 3, 4 }
+                };
+            double[,] b = {
+                { 0, 1, 9 },
+                { 0.5, 3, 6},
+                { 1, 4, 5 },
+                { 0.2, 2, 7}
+                };
+
+            double[,] a2 = {
+                { 0, 1, 9 },
+                { 0.5, 2, 8},
+                { 1, 3, 4 },
+                { 0.2, 1.4, 8.6 }
+
+                };
+            double[,] b2 = {
+                { 0, 1, 9 },
+                { 0.5, 3, 6},
+                { 1, 4, 5 },
+                { 0.2, 2, 7}
+                };
+
+            Console.WriteLine(a2.GetLength(1));
+            GetCompare(a, b);
+            double[,] ans =  GetMultiply(a2, b2);
+            
+            for (int i = 0; i < ans.GetLength(0); i++)
+            {
+                for (int j = 0; j < ans.GetLength(1); j++)
+                {
+                    Console.Write(ans[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+
+            if (!TryDivide(b2)) Console.WriteLine("Ошибка в масиве присутствует 0 деление невозможно");
+            else
+            {
+                double[,] ans2 = GetDivide(a2, b2);
+                for (int i = 0; i < ans2.GetLength(0); i++)
+                {
+                    for (int j = 0; j < ans2.GetLength(1); j++)
+                    {
+                        Console.Write(ans2[i, j] + " ");
+                    }
+                    Console.WriteLine();
+                }
+            }
+            
+        }
+
+    }
+}
