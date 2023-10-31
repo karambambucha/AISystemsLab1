@@ -280,8 +280,8 @@ namespace AISystemsLab1
         {
             double asum = (a[0, 1] + a[0, 2] + a[1, 1] + a[1, 2] + a[2, 1] + a[2, 2]);
             double bsum = (b[0, 1] + b[0, 2] + b[1, 1] + b[1, 2] + b[2, 1] + b[2, 2] + b[3, 1] + b[3, 2]);
-            bool sravup = (((1f / (a.GetLength(0))) * asum) > ((1f / (b.GetLength(0))) * bsum));
-            bool sraveq = (((1f / (a.GetLength(0))) * asum) == ((1f / (b.GetLength(0))) * bsum));
+            bool sravup = (((1f / (3)) * asum) > ((1f / (4)) * bsum));
+            bool sraveq = (((1f / (3)) * asum) == ((1f / (4)) * bsum));
 
             if ((sravup == false) && (sraveq == false)) { return 1; }// a < b a!=b
             else if ((sravup == true) && (sraveq == false)) { return 2; }// a > b a!=b
