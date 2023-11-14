@@ -66,13 +66,42 @@ namespace AISystemsLab1
                 var a = fillA();
                 var b = fillB();
                 AddSetLevel(a, 0.2);
+                checkNesting(a,b);
                 var ans = SumSets(a, b);
                 fillC(ans);
             }
-            catch (Exception)
-            {
-                throw;
+            catch (Exception exp) 
+            { 
+                MessageBox.Show(exp.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error); 
             }
+        }
+
+        private void checkNesting(double[,] a, double[,] b)
+        {
+            double a1 = a[0,1];
+            double a2 = a[0,2];
+            double b1 = b[0,1];
+            double b2 = b[0,2];
+
+            double a3 = a[2, 1];
+            double a4 = a[2, 2];
+            double b3 = b[2, 1];
+            double b4 = b[2, 2];
+
+            for (int i = 1; i < a.GetLength(0); i++)
+                if(a1 >= a[i,1] || a2 <= a[i,2])
+                    throw new Exception("Имеется невложенность!");
+            for (int i = 1; i < b.GetLength(0); i++)
+                if(b1 >= b[i,1] || b2 <= b[i,2])
+                    throw new Exception("Имеется невложенность!");
+
+            for (int i = 0; i < a.GetLength(0) && i!= 2; i++)
+                if (a3 <= a[i, 1] || a4 >= a[i, 2])
+                    throw new Exception("Имеется невложенность!");
+            for (int i = 0; i < b.GetLength(0) && i!= 2; i++)
+                if (b3 <= b[i, 1] || b4 >= b[i, 2])
+                    throw new Exception("Имеется невложенность!");
+
         }
 
         private void subtract_Click(object sender, EventArgs e)
@@ -82,12 +111,13 @@ namespace AISystemsLab1
                 var a = fillA();
                 var b = fillB();
                 AddSetLevel(a, 0.2);
+                checkNesting(a, b);
                 var ans = SubtractSets(a, b);
                 fillC(ans);
             }
-            catch (Exception)
+            catch (Exception exp)
             {
-                throw;
+                MessageBox.Show(exp.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -98,12 +128,13 @@ namespace AISystemsLab1
                 var a = fillA();
                 var b = fillB();
                 AddSetLevel(a, 0.2);
+                checkNesting(a, b);
                 var ans = MultiplySets(a, b);
                 fillC(ans);
             }
-            catch (Exception)
+            catch (Exception exp)
             {
-                throw;
+                MessageBox.Show(exp.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }           
         }
 
@@ -114,6 +145,7 @@ namespace AISystemsLab1
                 var a = fillA();
                 var b = fillB();
                 AddSetLevel(a, 0.2);
+                checkNesting(a, b);
                 if (!TryDivide(b)) 
                     throw new Exception("На 0 делить нельзя!");
                 else
@@ -122,9 +154,9 @@ namespace AISystemsLab1
                     fillC(ans);
                 }
             }
-            catch (Exception)
+            catch (Exception exp)
             {
-                throw;
+                MessageBox.Show(exp.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }            
         }
         private double[,] fillA()
@@ -209,9 +241,18 @@ namespace AISystemsLab1
 
         private void compare_Click(object sender, EventArgs e)
         {
-            var a = fillA();
-            var b = fillB();
-            richTextBox1.Text = "Множество А " + GetCompare(a, b) + " множества B";
+            try
+            {
+                var a = fillA();
+                var b = fillB();
+                AddSetLevel(a, 0.2);
+                checkNesting(a, b);
+                richTextBox1.Text = "Множество А " + GetCompare(a, b) + " множества B";
+            }
+            catch (Exception exp)
+            {
+                MessageBox.Show(exp.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         private void BuildGraph(string name, DataGridView dataGridView)
         {
@@ -303,9 +344,9 @@ namespace AISystemsLab1
         public static bool TryDivide(double[,] b)
         {
 
-            for (int i = 1; i < b.GetLength(0); i++)
+            for (int i = 0; i < b.GetLength(0); i++)
             {
-                for (int j = 0; j < b.GetLength(1); j++)
+                for (int j = 1; j < b.GetLength(1); j++)
                 {
                     if (b[i, j] == 0) 
                         return false;
